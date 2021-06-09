@@ -1,43 +1,39 @@
-from sqlalchemy import Column, ForeignKey, Integer, String, Boolean
-from sqlalchemy.ext.declarative import declarative_base
+from flask import Flask
+from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import relationship
-from sqlalchemy import create_engine
 
-Base = declarative_base()
+app = Flask(__name__)
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
 
-
-class User(Base):
-    __tablename__ = 'user'
-    id = Column(Integer, primary_key=True, autoincrement=True)
-    username = Column(String)
+db = SQLAlchemy(app)
 
 
-class Game(Base):
-    __tablename__ = 'game'
-    id = Column(Integer, primary_key=True, autoincrement=True)
-    user_id = Column(Integer, ForeignKey('user.id'))
+class User(db.Model):
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    username = db.Column(db.String)
+
+
+class Game(db.Model):
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     user = relationship(User)
-    turns = Column(Integer)
-    cheat_mode = Column(Boolean)
-    duplicate_color = Column(Boolean)
-    number_of_colors = Column(Integer)
-    number_of_positions = Column(Integer)
+    turns = db.Column(db.Integer)
+    cheat_mode = db.Column(db.Boolean)
+    duplicate_color = db.Column(db.Boolean)
+    number_of_colors = db.Column(db.Integer)
+    number_of_positions = db.Column(db.Integer)
 
 
-class Pin(Base):
-    __tablename__ = 'pin'
-    game_id = Column(Integer, ForeignKey('game.id'), primary_key=True)
+class Pin(db.Model):
+    game_id = db.Column(db.Integer, db.ForeignKey('game.id'), primary_key=True)
     game = relationship(Game)
-    color = Column(String, ForeignKey('pincolor.color'))
-    x = Column(Integer, primary_key=True)
-    y = Column(Integer, primary_key=True)
+    color = db.Column(db.String, db.ForeignKey('pincolor.color'))
+    x = db.Column(db.Integer, primary_key=True)
+    y = db.Column(db.Integer, primary_key=True)
 
 
-class PinColor(Base):
-    __tablename__ = 'pincolor'
-    color = Column(String, primary_key=True)
+class PinColor(db.Model):
+    color = db.Column(db.String, primary_key=True)
 
 
-engine = create_engine('sqlite:///database.db')
-
-Base.metadata.create_all(engine)
+db.create_all()
