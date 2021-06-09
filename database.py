@@ -1,11 +1,19 @@
-from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import relationship
 
-app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
+db = SQLAlchemy()
 
-db = SQLAlchemy(app)
+
+class SetupDatabase:
+    def __init__(self, db):
+        self.db = db
+
+    def create_database(self):
+        try:
+            open('database.db')
+
+        except IOError:
+            self.db.create_all()
 
 
 class User(db.Model):
@@ -24,6 +32,11 @@ class Game(db.Model):
     number_of_positions = db.Column(db.Integer)
 
 
+class PinColor(db.Model):
+    __tablename__ = 'pincolor'
+    color = db.Column(db.String, primary_key=True)
+
+
 class Pin(db.Model):
     game_id = db.Column(db.Integer, db.ForeignKey('game.id'), primary_key=True)
     game = relationship(Game)
@@ -31,9 +44,3 @@ class Pin(db.Model):
     x = db.Column(db.Integer, primary_key=True)
     y = db.Column(db.Integer, primary_key=True)
 
-
-class PinColor(db.Model):
-    color = db.Column(db.String, primary_key=True)
-
-
-db.create_all()
