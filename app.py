@@ -21,7 +21,6 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
 
 db.init_app(app)
 
-
 @app.route('/')
 def index():
     return render_template('index.html')
@@ -51,3 +50,6 @@ def create_game():
 
 with app.app_context():
     db.create_all()
+
+if __name__ == "__main__":
+    app.run(debug=True)
