@@ -21,6 +21,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
 
 db.init_app(app)
 
+
 @app.route('/')
 def index():
     return render_template('index.html')
@@ -29,18 +30,21 @@ def index():
 @app.route('/login', methods=['POST'])
 def login():
     username = request.form['username']
-    session['username'] = username
     db_user = User.query.filter_by(username=username).first()
+
     if db_user is None:
-        me = User(username=username)
-        db.session.add(me)
+        db_user = User(username=username)
+        db.session.add(db_user)
         db.session.commit()
+
+    session['user_id'] = db_user.id
     return redirect('/game')
 
 
 @app.route('/game')
 def game():
-    return render_template('game.html')
+    games = Game.query.filter_by(user_id=session['user_id']).all()
+    return render_template('game.html', games=games)
 
 
 @app.route('/game/create', methods=['GET', 'POST'])
@@ -49,7 +53,7 @@ def create_game():
         return render_template('create-game.html')
     else:
         new_game = Game(
-            user_id=User.query.filter_by(username=session['username']).first().id,
+            user_id=session['user_id'],
             turns=int(request.form['turns']),
             cheat_mode=False,
             duplicate_color=bool(request.form.get('duplicate_color') or ''),
