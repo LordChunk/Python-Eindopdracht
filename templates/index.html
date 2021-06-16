@@ -1,0 +1,13 @@
+{% extends "layout.html" %}
+{% block content %}
+    <div class="col-lg-6">
+        <h3>Set your username to start a meesturbrein game</h3>
+        <form action="/login" method="post">
+            <div class="input-group mb-3">
+                <span class="input-group-text" id="basic-addon1">@</span>
+                <input type="text" class="form-control" name="username" placeholder="TheLegend27" required>
+            </div>
+            <button type="submit" class="btn btn-primary float-end">Submit</button>
+        </form>
+    </div>
+{% endblock %}
