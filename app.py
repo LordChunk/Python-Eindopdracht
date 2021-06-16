@@ -31,8 +31,8 @@ def index():
 def login():
     username = request.form['username']
     session['username'] = username
-    dbuser = User.query.filter_by(username=username).first()
-    if dbuser is None:
+    db_user = User.query.filter_by(username=username).first()
+    if db_user is None:
         me = User(username=username)
         db.session.add(me)
         db.session.commit()
@@ -42,6 +42,11 @@ def login():
 @app.route('/game')
 def game():
     return render_template('game.html')
+
+
+@app.route('/game/create')
+def create_game():
+    return render_template('create-game.html')
 
 
 with app.app_context():

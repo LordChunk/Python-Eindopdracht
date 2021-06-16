@@ -1,0 +1,36 @@
+{% extends "layout.html" %}
+{% block content %}
+    <div class="col-lg-6">
+        <h2>Time to create a game Mr/Ms {{ session['username'] }}</h2>
+
+        <form action="/game/create" method="POST">
+            <div class="input-group mb-3">
+                <input type="number" class="form-control" name="turns" value="10" placeholder="Number of turns">
+            </div>
+
+            <label for="duplicate_color_checkbox" class="input-group mb-3">
+                <div class="input-group-text">
+                    <input id="duplicate_color_checkbox" class="form-check-input mt-0" name="duplicate_color" type="checkbox">
+                </div>
+                <div class="form-control">Should one color appear more than once?</div>
+            </label>
+
+            <div class="input-group mb-3">
+                <input type="number" class="form-control" name="number_of_colors"
+                       placeholder="How many colors do you want?">
+            </div>
+
+            <div class="input-group mb-3">
+                <input type="number" class="form-control" name="number_of_colors" value="6"
+                       placeholder="How many colors do you want?">
+            </div>
+
+            <div class="input-group mb-3">
+                <input type="number" class="form-control" name="number_of_positions" value="4"
+                       placeholder="How positions do you want to play with?">
+            </div>
+
+            <button type="submit" class="btn btn-primary float-end">Submit</button>
+        </form>
+    </div>
+{% endblock %}
