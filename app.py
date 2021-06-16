@@ -43,9 +43,24 @@ def game():
     return render_template('game.html')
 
 
-@app.route('/game/create')
+@app.route('/game/create', methods=['GET', 'POST'])
 def create_game():
-    return render_template('create-game.html')
+    if request.method == 'GET':
+        return render_template('create-game.html')
+    else:
+        new_game = Game(
+            user_id=User.query.filter_by(username=session['username']).first().id,
+            turns=int(request.form['turns']),
+            cheat_mode=False,
+            duplicate_color=bool(request.form.get('duplicate_color') or ''),
+            number_of_colors=int(request.form['number_of_colors']),
+            number_of_positions=int(request.form['number_of_positions']),
+        )
+
+        db.session.add(new_game)
+        db.session.commit()
+
+        return redirect('/game/'+str(new_game.id))
 
 
 with app.app_context():
