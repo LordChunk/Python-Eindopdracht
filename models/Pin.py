@@ -1,8 +1,7 @@
 from sqlalchemy.orm import relationship
 
 from database import db
-from models import Game
-
+from models.Game import Game
 
 
 class Pin(db.Model):

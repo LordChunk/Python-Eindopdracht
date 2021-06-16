@@ -1,6 +1,7 @@
 from database import db
 from sqlalchemy.orm import relationship
-from models import User
+
+from models.User import User
 
 
 class Game(db.Model):

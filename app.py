@@ -4,7 +4,12 @@ from database import db
 import secrets
 
 # These imports ensure the database is created properly
-from models import User, PinColor, Game, Pin
+from models.User import User
+from models.Game import Game
+from models.Pin import Pin
+from models.PinColor import PinColor
+
+
 
 app = Flask(__name__)
 app.logger.setLevel(logging.INFO)
