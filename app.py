@@ -1,7 +1,13 @@
-from flask import Flask, render_template, request, session, redirect, url_for
+from flask import Flask, render_template, request, session, redirect
 import logging
-from database import db, User
+from database import db
 import secrets
+
+# These imports ensure the database is created properly
+from models.User import User
+from models.Game import Game
+from models.Pin import Pin
+from models.PinColor import PinColor
 
 
 app = Flask(__name__)
@@ -26,7 +32,6 @@ def login():
     username = request.form['username']
     session['username'] = username
     dbuser = User.query.filter_by(username=username).first()
-    print(dbuser)
     if dbuser is None:
         me = User(username=username)
         db.session.add(me)
