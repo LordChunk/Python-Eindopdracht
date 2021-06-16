@@ -10,7 +10,6 @@ from models.Pin import Pin
 from models.PinColor import PinColor
 
 
-
 app = Flask(__name__)
 app.logger.setLevel(logging.INFO)
 
@@ -33,7 +32,6 @@ def login():
     username = request.form['username']
     session['username'] = username
     dbuser = User.query.filter_by(username=username).first()
-    print(dbuser)
     if dbuser is None:
         me = User(username=username)
         db.session.add(me)
