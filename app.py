@@ -1,8 +1,10 @@
-from flask import Flask, render_template, request, session, redirect, url_for
+from flask import Flask, render_template, request, session, redirect
 import logging
-from database import db, User
+from database import db
 import secrets
 
+# These imports ensure the database is created properly
+from models import User, PinColor, Game, Pin
 
 app = Flask(__name__)
 app.logger.setLevel(logging.INFO)
