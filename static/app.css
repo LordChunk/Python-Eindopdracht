@@ -10,6 +10,16 @@
     outline: 1px solid black;
 }
 
+.top-row > * {
+    padding: 0;
+    display: flex;
+}
+.correct {
+    color: red;
+}
+.in_but_not_correct {
+    /*color: white;*/
+}
 .RED {
     background-color: red;
 }

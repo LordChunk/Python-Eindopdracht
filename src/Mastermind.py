@@ -1,3 +1,4 @@
+import copy
 import random
 
 from database import db
@@ -55,49 +56,49 @@ class Mastermind:
 
     def sort_pins(self, pins):
         sorted_pins = {}
+        # Generate dictionary for field with all values as None
+        for y in range(self.Game.turns):
+            sorted_pins[y] = []
+            for x in range(self.Game.number_of_positions):
+                sorted_pins[y].append(None)
+
+        # Loop through pins and replace values in dictionary
         for pin in pins:
-            # get all the keys and store them in a list
-            key_list = sorted_pins.keys()
-
-            # check if the y coordinate is already in the key list
-            if pin.y in key_list:
-
-                # if so then get the already existing array add this pin and save it back in the dictionary
-                pin_array = sorted_pins[pin.y]
-                pin_array.append(pin)
-                sorted_pins[pin.y] = pin_array
-
-            else:
-                # if not then make a new array that contains this pin and add this to the dictionary
-                sorted_pins[pin.y] = [pin]
+            sorted_pins[pin.y][pin.x] = pin
 
         return sorted_pins
 
-    def guess_the_code(self, guessed_colors):
+    def guess_the_code(self, og_pin_row):
+        # Copy objects to prevent manipulating them globally
+        pin_row = copy.copy(og_pin_row)
+        code = copy.deepcopy(self.Game.code)
+
         result = {
             "in_but_not_correct": 0,
             "correct": 0,
         }
 
         # Check if pins are in exactly the right spot
-        code = self.Game.code
+        not_exact_pins = []
         i = 0
-        for guessed_color in guessed_colors:
-            if guessed_color is not None and code[i] == guessed_color:
-                result['correct'] += 1
-                code[i] = None
+        for pin in pin_row:
+            if pin is not None:
+                if str(code[i]) == pin.color:
+                    result['correct'] += 1
+                    code[i] = None
+                else:
+                    not_exact_pins.append(pin)
             i += 1
 
         # Check if remaining pins are not in the right spot but have the right colour
         i = 0
-        for guessed_color in guessed_colors:
-            if guessed_color is not None:
-                j = 0
+        for pin in not_exact_pins:
+            if pin is not None:
                 for color_code in code:
-                    if color_code is not None and color_code == guessed_color:
+                    if color_code is not None and str(color_code) == pin.color:
                         result['in_but_not_correct'] += 1
                         code[i] = None
-                    j += 1
+                        break
             i += 1
         return result
 

@@ -1,13 +1,25 @@
 {% extends "layout.html" %}
 {% block content %}
-    <div class="col-lg-6">
+    <div class="col-lg-8">
         <form method="POST" action="./{{ game.id }}">
             <div class="container board-container">
-                <div class="row">First row is game's actual code</div>
+                <div class="row top-row">
+                    <span>
+                         Correctly placed pin are marked by: <span class="material-icons correct">add_circle</span>
+                    </span>
+                    <span>
+                        Pins that are the correct color but not in the right position are marked by: <span
+                            class="material-icons in_but_not_correct">add_circle_outline</span>
+                    </span>
+                    <span>
+                        First row is game's actual code
+                    </span>
+                </div>
                 <div class="row">
                     {% for color in code %}
                         <div class="col {{ color | replace('Color.', '') }}"></div>
                     {% endfor %}
+                    <div class="col">Results</div>
                 </div>
 
                 {% for y in range(0, 10) %}
@@ -20,9 +32,18 @@
                                 first |
                                 replace('Color.', '') }}"
                             >
-                                {# i, _ #}
                             </div>
                         {% endfor %}
+                        <div class="col">
+                            {% if results[y] != Undefined %}
+                                {% for _ in range(results[y].correct) %}
+                                    <span class="material-icons correct">add_circle</span>
+                                {% endfor %}
+                                {% for _ in range(results[y].in_but_not_correct) %}
+                                    <span class="material-icons in_but_not_correct">add_circle_outline</span>
+                                {% endfor %}
+                            {% endif %}
+                        </div>
                     </div>
                 {% endfor %}
                 <div class="row">
@@ -34,6 +55,7 @@
                             {% endfor %}
                         </select>
                     {% endfor %}
+                    <div class="col"></div>
                 </div>
             </div>
             <button type="submit" class="btn btn-primary float-end mt-3">
