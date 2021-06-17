@@ -97,7 +97,6 @@ class Mastermind:
                 for color_code in code:
                     if color_code is not None and str(color_code) == pin.color:
                         result['in_but_not_correct'] += 1
-                        code[i] = None
                         break
             i += 1
         return result
