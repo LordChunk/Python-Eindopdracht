@@ -69,6 +69,7 @@ def create_game():
 
 with app.app_context():
     db.create_all()
+    PinColor.seed()
 
 if __name__ == "__main__":
     app.run(debug=True)
