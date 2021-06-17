@@ -1,3 +1,4 @@
+import copy
 import random
 
 from database import db
@@ -67,31 +68,37 @@ class Mastermind:
 
         return sorted_pins
 
-    def guess_the_code(self, pin_row):
+    def guess_the_code(self, og_pin_row):
+        # Copy objects to prevent manipulating them globally
+        pin_row = copy.copy(og_pin_row)
+        code = copy.deepcopy(self.Game.code)
+
         result = {
             "in_but_not_correct": 0,
             "correct": 0,
         }
 
         # Check if pins are in exactly the right spot
-        code = self.Game.code
+        not_exact_pins = []
         i = 0
         for pin in pin_row:
-            if pin is not None and str(code[i]) == pin.color:
-                result['correct'] += 1
-                code[i] = None
+            if pin is not None:
+                if str(code[i]) == pin.color:
+                    result['correct'] += 1
+                    code[i] = None
+                else:
+                    not_exact_pins.append(pin)
             i += 1
 
         # Check if remaining pins are not in the right spot but have the right colour
         i = 0
-        for pin in pin_row:
+        for pin in not_exact_pins:
             if pin is not None:
-                j = 0
                 for color_code in code:
                     if color_code is not None and str(color_code) == pin.color:
                         result['in_but_not_correct'] += 1
                         code[i] = None
-                    j += 1
+                        break
             i += 1
         return result
 
