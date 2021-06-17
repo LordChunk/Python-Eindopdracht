@@ -1,8 +1,6 @@
 from database import db
 from sqlalchemy.orm import relationship
-from models.Color import Color
 from models.User import User
-import random
 
 
 class Game(db.Model):
