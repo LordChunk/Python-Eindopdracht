@@ -71,11 +71,23 @@ def create_game():
         return redirect('/game/' + str(new_game.id))
 
 
-@app.route('/game/<game_id>')
+@app.route('/game/<game_id>', methods=['GET', 'POST'])
 def game(game_id):
     game = Game.query.filter_by(id=game_id).first()
-    pins = Pin.query.filter_by(game_id=game_id).all()
-    return render_template('game.html', game=game, pins=pins, Color=Color)
+    if request.method == 'GET':
+        pins = Pin.query.filter_by(game_id=game_id).all()
+        return render_template('game.html', game=game, pins=pins, Color=Color)
+    else:
+        color_array = []
+        for value in request.form.values():
+            if value == 'None':
+                color_array.append(None)
+            else:
+                color_array.append(Color[value])
+
+        # TODO: Pass color_array to game Mastermind
+
+        return redirect('/game/' + str(game.id))
 
 
 with app.app_context():
