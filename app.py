@@ -4,6 +4,7 @@ from database import db
 import secrets
 
 # These imports ensure the database is created properly
+from models.Color import Color
 from models.User import User
 from models.Game import Game
 from models.Pin import Pin
@@ -71,7 +72,7 @@ def create_game():
 def game(game_id):
     game = Game.query.filter_by(id=game_id).first()
     pins = Pin.query.filter_by(game_id=game_id).all()
-    return render_template('game.html', game=game, pins=pins)
+    return render_template('game.html', game=game, pins=pins, Color=Color)
 
 
 with app.app_context():
