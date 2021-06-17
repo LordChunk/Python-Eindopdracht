@@ -1,4 +1,6 @@
 import random
+
+from database import db
 from models.Color import Color
 from models.Game import Game
 from models.Pin import Pin
@@ -53,6 +55,22 @@ class Mastermind:
                             result["in_but_not_correct"] += 1
                         break
         return result
+
+    def add_new_pin_row(self, color_row):
+        i = 0
+        for pinColor in color_row:
+            if pinColor is not None:
+                pin = Pin(
+                    game_id=self.Game.id,
+                    color=str(pinColor),
+                    x=i,
+                    y=self.Game.turns
+                )
+                db.session.add(pin)
+            i += 1
+
+        self.Game.turns += 1
+        db.session.commit()
 
     def did_player_win(self, result):
         if Game.number_of_positions == result["correct"]:
