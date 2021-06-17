@@ -21,9 +21,9 @@
                 <div class="row">
                     {% for x in range(0, game.number_of_positions) %}
                         <select class="col" name="{{ x }}">
-                            <option value="null">Empty</option>
+                            <option value="None">Empty</option>
                             {% for c in Color %}
-                                <option value="{{ c }}">{{ c | replace('Color.', '') | capitalize }}</option>
+                                <option value="{{ c | replace('Color.', '') }}">{{ c | replace('Color.', '') | capitalize }}</option>
                             {% endfor %}
                         </select>
                     {% endfor %}
