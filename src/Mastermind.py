@@ -1,6 +1,7 @@
 import random
 from models.Color import Color
 from models.Game import Game
+from models.Pin import Pin
 
 
 class Mastermind:
@@ -25,6 +26,14 @@ class Mastermind:
     def get_random_color(self):
         return Color(random.randint(0, self.Game.number_of_colors - 1))
 
+    def get_all_results(self):
+        pins = Pin.query.filter_by(game_id=self.Game.id).all()
+
+        all_results = []
+
+        for x in range(10):
+            all_results.append(guess_the_code())
+
     def guess_the_code(self, guessed_code):
         result = {
             "in_but_not_correct": 0,
@@ -33,13 +42,16 @@ class Mastermind:
 
         # ToDo: fix bug with duplicate colors
         for guessed_colors in range(len(guessed_code)):
-            for color in range(len(self.Game.code)):
-                if self.Game.code[color] == guessed_code[guessed_colors]:
-                    if guessed_colors == color:
-                        result["correct"] += 1
-                    else:
-                        result["in_but_not_correct"] += 1
-                    break
+            if self.Game.code[guessed_colors] == guessed_code[guessed_colors]:
+                result["correct"] += 1
+            else:
+                for color in range(len(self.Game.code)):
+                    if self.Game.code[color] == guessed_code[guessed_colors]:
+                        if guessed_colors == color:
+                            result["correct"] += 1
+                        else:
+                            result["in_but_not_correct"] += 1
+                        break
         return result
 
     def did_player_win(self, result):
