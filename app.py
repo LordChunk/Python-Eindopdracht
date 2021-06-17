@@ -88,8 +88,6 @@ def game(game_id):
                 color_array.append(Color[value])
 
         mastermind = Mastermind(game)
-        # result = mastermind.guess_the_code(color_array)
-        # mastermind.did_player_win(result)
         # TODO save pins to db
         mastermind.add_new_pin_row(color_array)
         return redirect('/game/' + str(game.id))
