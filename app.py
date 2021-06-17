@@ -76,7 +76,9 @@ def game(game_id):
     game = Game.query.filter_by(id=game_id).first()
     if request.method == 'GET':
         pins = Pin.query.filter_by(game_id=game_id).all()
-        return render_template('game.html', game=game, pins=pins, Color=Color)
+        used_colors = list(Color)[0:game.number_of_colors]
+
+        return render_template('game.html', game=game, pins=pins, Color=used_colors)
     else:
         color_array = []
         for value in request.form.values():
