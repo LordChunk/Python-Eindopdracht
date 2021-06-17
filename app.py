@@ -54,7 +54,7 @@ def create_game():
     else:
         new_game = Game(
             user_id=session['user_id'],
-            turns=int(request.form['turns']),
+            turns=0,
             cheat_mode=False,
             duplicate_color=bool(request.form.get('duplicate_color') or ''),
             number_of_colors=int(request.form['number_of_colors']),
@@ -76,6 +76,7 @@ def game(game_id):
     if request.method == 'GET':
         pins = Pin.query.filter_by(game_id=game_id).all()
         used_colors = list(Color)[0:game.number_of_colors]
+        # TODO: Add logic for winning
 
         return render_template('game.html', game=game, pins=pins, Color=used_colors)
     else:
@@ -87,10 +88,10 @@ def game(game_id):
                 color_array.append(Color[value])
 
         mastermind = Mastermind(game)
-        result = mastermind.guess_the_code(color_array)
-        mastermind.did_player_win(result)
-        # TODO: Add logic for winning
-
+        # result = mastermind.guess_the_code(color_array)
+        # mastermind.did_player_win(result)
+        # TODO save pins to db
+        mastermind.add_new_pin_row(color_array)
         return redirect('/game/' + str(game.id))
 
 
