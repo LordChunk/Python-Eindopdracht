@@ -15,7 +15,7 @@ class Mastermind:
         secret_code = []
 
         # get a code of colors by looking at how many colors you can chose from
-        for x in range(self.Game.number_of_colors):
+        for x in range(self.Game.number_of_positions):
 
             # pick a random color
             color = self.get_random_color()
