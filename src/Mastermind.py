@@ -119,7 +119,7 @@ class Mastermind:
         db.session.commit()
 
     def did_player_win(self, result):
-        if Game.number_of_positions == result["correct"]:
+        if self.Game.number_of_positions == result["correct"]:
             return True
 
         return False

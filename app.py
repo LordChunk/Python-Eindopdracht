@@ -79,7 +79,12 @@ def game(game_id):
         used_colors = list(Color)[0:game.number_of_colors]
         results = mastermind.get_all_results()
         # TODO: Add logic for winning
+        for result in results:
+            if mastermind.did_player_win(result):
+                game.won = True
+                break
 
+        db.session.commit()
         return render_template('game.html', game=game, pins=pins, Color=used_colors, code=game.code, results=results)
     else:
         color_array = []
@@ -92,6 +97,7 @@ def game(game_id):
         mastermind = Mastermind(game)
         # TODO save pins to db
         mastermind.add_new_pin_row(color_array)
+
         return redirect('/game/' + str(game.id))
 
 
