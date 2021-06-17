@@ -1,11 +1,30 @@
 {% extends "layout.html" %}
 {% block content %}
     <div class="col-lg-6">
-        <h2>Welcome to the game page</h2>
-
-        <a href="/game/create">Create a new game</a>
-        <div>
-            <h3>List of active games:</h3>
+        {{ pins }}
+        <div class="container board-container">
+            <div class="row">
+                {% for i in range(0, game.number_of_positions) %}
+                    <div class="col">{{ i }}</div>
+                {% endfor %}
+            </div>
+            {% for y in range(0, 10) %}
+                <div class="row">
+                    {% for x in range(0, game.number_of_positions) %}
+                        <div class="col {{ pins |
+                                selectattr('x', 'equalto', x) |
+                                selectattr('y', 'equalto',y) |
+                                map(attribute='color') |
+                                first |
+                                replace('Color.', '') }}"
+                        >
+                            {# i, _ #}
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endfor %}
         </div>
+
+
     </div>
 {% endblock %}

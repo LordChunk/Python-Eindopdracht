@@ -1,0 +1,44 @@
+.board-container .col {
+    width: 4em;
+    height: 4em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+
+    border: 1px solid black;
+    outline: 1px solid black;
+}
+
+.RED {
+    background-color: red;
+}
+
+.BLUE {
+    background-color: blue;
+}
+.GREEN {
+    background-color: green;
+}
+.ORANGE {
+    background-color: orange;
+}
+.PINK {
+    background-color: pink;
+}
+.PURPLE {
+    background-color: purple;
+}
+.YELLOW {
+    background-color: yellow;
+}
+.BLACK {
+    background-color: black;
+}
+.BROWN
+{
+    background-color: brown;
+}
+.TURQUOISE{
+    background-color: turquoise;
+}

@@ -41,9 +41,9 @@ def login():
 
 
 @app.route('/game')
-def game():
+def game_list():
     games = Game.query.filter_by(user_id=session['user_id']).all()
-    return render_template('game.html', games=games)
+    return render_template('game-list.html', games=games)
 
 
 @app.route('/game/create', methods=['GET', 'POST'])
@@ -67,8 +67,16 @@ def create_game():
         return redirect('/game/' + str(new_game.id))
 
 
+@app.route('/game/<game_id>')
+def game(game_id):
+    game = Game.query.filter_by(id=game_id).first()
+    pins = Pin.query.filter_by(game_id=game_id).all()
+    return render_template('game.html', game=game, pins=pins)
+
+
 with app.app_context():
     db.create_all()
+    PinColor.seed()
 
 if __name__ == "__main__":
     app.run(debug=True)
