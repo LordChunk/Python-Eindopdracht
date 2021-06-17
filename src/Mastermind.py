@@ -29,10 +29,26 @@ class Mastermind:
     def get_all_results(self):
         pins = Pin.query.filter_by(game_id=self.Game.id).all()
 
+        sorted_pins = self.sort_pins(pins)
+
         all_results = []
 
-        for x in range(10):
-            all_results.append(guess_the_code())
+        for key in sorted_pins.keys():
+            all_results.append(self.guess_the_code(sorted_pins[key]))
+
+        return all_results
+
+    def sort_pins(self, pins):
+        sorted_pins = {}
+        for pin in pins:
+            key_list = sorted_pins.keys()
+            if pin.y in key_list:
+                pin_array = sorted_pins[pin.y]
+                pin_array.append(pin)
+            else:
+                sorted_pins[pin.y] = [pin]
+
+        return sorted_pins
 
     def guess_the_code(self, guessed_code):
         result = {
