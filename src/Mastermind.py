@@ -13,15 +13,23 @@ class Mastermind:
 
     def make_code(self):
         secret_code = []
+
+        # get a code of colors by looking at how many colors you can chose from
         for x in range(self.Game.number_of_colors):
+
+            # pick a random color
             color = self.get_random_color()
 
+            # if you cant have duplicate colors check if the color is already in the code
             if not self.Game.duplicate_color:
+                # if the color is already in the code then just pick a new one until you get one that is not in the code
                 while color in secret_code:
                     color = self.get_random_color()
 
+            # add the random color to the code
             secret_code.append(color)
 
+        # save the code in the game and return it.
         Game.code = secret_code
         return secret_code
 
@@ -29,12 +37,41 @@ class Mastermind:
         return Color(random.randint(0, self.Game.number_of_colors - 1))
 
     def get_all_results(self):
+        # get all placed pins from the database
         pins = Pin.query.filter_by(game_id=self.Game.id).all()
 
+        # sort the pins in a dictionary that has the y positions as keys and as values an array of pins
+        # this makes it so every row is separated
+        sorted_pins = self.sort_pins(pins)
+
+        # array to save all the results
         all_results = []
 
-        for x in range(10):
-            all_results.append(guess_the_code())
+        # go through all the keys aka rows and get the results
+        for key in sorted_pins.keys():
+            all_results.append(self.guess_the_code(sorted_pins[key]))
+
+        return all_results
+
+    def sort_pins(self, pins):
+        sorted_pins = {}
+        for pin in pins:
+            # get all the keys and store them in a list
+            key_list = sorted_pins.keys()
+
+            # check if the y coordinate is already in the key list
+            if pin.y in key_list:
+
+                # if so then get the already existing array add this pin and save it back in the dictionary
+                pin_array = sorted_pins[pin.y]
+                pin_array.append(pin)
+                sorted_pins[pin.y] = pin_array
+
+            else:
+                # if not then make a new array that contains this pin and add this to the dictionary
+                sorted_pins[pin.y] = [pin]
+
+        return sorted_pins
 
     def guess_the_code(self, guessed_colors):
         result = {
