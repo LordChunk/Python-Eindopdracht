@@ -43,8 +43,17 @@ def login():
 
 @app.route('/game')
 def game_list():
+    # ToDO: fix logout login bug with stats
     games = Game.query.filter_by(user_id=session['user_id']).all()
-    return render_template('game-list.html', games=games)
+    user = User.query.filter_by(id=session['user_id']).first()
+    games_played = Game.query.filter_by(id=session['user_id']).count()
+
+    if games_played == 0:
+        average_turns = 0
+    else:
+        average_turns = sum(game.turns for game in games) / games_played
+
+    return render_template('game-list.html', games=games, user=user, games_played=games_played, average_turns=average_turns)
 
 
 @app.route('/game/create', methods=['GET', 'POST'])
