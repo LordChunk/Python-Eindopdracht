@@ -73,10 +73,13 @@ def create_game():
 @app.route('/game/<game_id>', methods=['GET', 'POST'])
 def game(game_id):
     game = Game.query.filter_by(id=game_id).first()
+    mastermind = Mastermind(game)
     if request.method == 'GET':
         pins = Pin.query.filter_by(game_id=game_id).all()
         used_colors = list(Color)[0:game.number_of_colors]
         # TODO: Add logic for winning
+
+        print(mastermind.get_all_results())
 
         return render_template('game.html', game=game, pins=pins, Color=used_colors, code=game.code)
     else:
@@ -87,7 +90,6 @@ def game(game_id):
             else:
                 color_array.append(Color[value])
 
-        mastermind = Mastermind(game)
         # result = mastermind.guess_the_code(color_array)
         # mastermind.did_player_win(result)
         # TODO save pins to db

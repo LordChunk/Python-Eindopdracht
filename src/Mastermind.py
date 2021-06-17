@@ -55,21 +55,15 @@ class Mastermind:
 
     def sort_pins(self, pins):
         sorted_pins = {}
+        # Generate dictionary for field with all values as None
+        for y in range(self.Game.turns):
+            sorted_pins[y] = []
+            for x in range(self.Game.number_of_positions):
+                sorted_pins[y].append(None)
+
+        # Loop through pins and replace values in dictionary
         for pin in pins:
-            # get all the keys and store them in a list
-            key_list = sorted_pins.keys()
-
-            # check if the y coordinate is already in the key list
-            if pin.y in key_list:
-
-                # if so then get the already existing array add this pin and save it back in the dictionary
-                pin_array = sorted_pins[pin.y]
-                pin_array.append(pin)
-                sorted_pins[pin.y] = pin_array
-
-            else:
-                # if not then make a new array that contains this pin and add this to the dictionary
-                sorted_pins[pin.y] = [pin]
+            sorted_pins[pin.y][pin.x] = pin
 
         return sorted_pins
 
