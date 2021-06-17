@@ -22,7 +22,6 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
 
 db.init_app(app)
 
-
 @app.route('/')
 def index():
     return render_template('index.html')
@@ -87,7 +86,10 @@ def game(game_id):
             else:
                 color_array.append(Color[value])
 
-        # TODO: Pass color_array to game Mastermind
+        mastermind = Mastermind(game)
+        result = mastermind.guess_the_code(color_array)
+        mastermind.did_player_win(result)
+        # TODO: Add logic for winning
 
         return redirect('/game/' + str(game.id))
 

@@ -41,3 +41,9 @@ class Mastermind:
                         result["in_but_not_correct"] += 1
                     break
         return result
+
+    def did_player_win(self, result):
+        if Game.number_of_positions == result["correct"]:
+            return True
+
+        return False
