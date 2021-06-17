@@ -78,7 +78,7 @@ def game(game_id):
         used_colors = list(Color)[0:game.number_of_colors]
         # TODO: Add logic for winning
 
-        return render_template('game.html', game=game, pins=pins, Color=used_colors)
+        return render_template('game.html', game=game, pins=pins, Color=used_colors, code=game.code)
     else:
         color_array = []
         for value in request.form.values():
