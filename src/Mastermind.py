@@ -49,7 +49,7 @@ class Mastermind:
 
         # go through all the keys aka rows and get the results
         for key in sorted_pins.keys():
-            all_results.append(self.guess_the_code(sorted_pins[key]))
+            all_results[key] = self.guess_the_code(sorted_pins[key])
 
         return all_results
 
