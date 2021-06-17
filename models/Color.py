@@ -2,13 +2,13 @@ from enum import Enum
 
 
 class Color(Enum):
-    RED = 1
-    BLUE = 2
-    GREEN = 3
-    ORANGE = 4
-    PINK = 5
-    PURPLE = 6
-    YELLOW = 7
-    BLACK = 8
-    BROWN = 9
-    TURQUOISE = 10
+    RED = 0
+    BLUE = 1
+    GREEN = 2
+    ORANGE = 3
+    PINK = 4
+    PURPLE = 5
+    YELLOW = 6
+    BLACK = 7
+    BROWN = 8
+    TURQUOISE = 9

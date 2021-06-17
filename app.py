@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, session, redirect
 import logging
 from database import db
 import secrets
+from src.Mastermind import Mastermind
 
 # These imports ensure the database is created properly
 from models.User import User
@@ -58,8 +59,10 @@ def create_game():
             duplicate_color=bool(request.form.get('duplicate_color') or ''),
             number_of_colors=int(request.form['number_of_colors']),
             number_of_positions=int(request.form['number_of_positions']),
-            code=Game.make_code(),
         )
+
+        new_mastermind = Mastermind(new_game)
+        new_game.code = new_mastermind.make_code()
 
         db.session.add(new_game)
         db.session.commit()
