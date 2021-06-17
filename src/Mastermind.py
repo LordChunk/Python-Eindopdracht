@@ -26,4 +26,18 @@ class Mastermind:
         return Color(random.randint(0, self.Game.number_of_colors - 1))
 
     def guess_the_code(self, guessed_code):
-        return True
+        result = {
+            "in_but_not_correct": 0,
+            "correct": 0,
+        }
+
+        # ToDo: fix bug with duplicate colors
+        for guessed_colors in range(len(guessed_code)):
+            for color in range(len(self.Game.code)):
+                if self.Game.code[color] == guessed_code[guessed_colors]:
+                    if guessed_colors == color:
+                        result["correct"] += 1
+                    else:
+                        result["in_but_not_correct"] += 1
+                    break
+        return result
