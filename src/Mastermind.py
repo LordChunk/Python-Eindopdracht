@@ -36,24 +36,32 @@ class Mastermind:
         for x in range(10):
             all_results.append(guess_the_code())
 
-    def guess_the_code(self, guessed_code):
+    def guess_the_code(self, guessed_colors):
         result = {
             "in_but_not_correct": 0,
             "correct": 0,
         }
 
-        # ToDo: fix bug with duplicate colors
-        for guessed_colors in range(len(guessed_code)):
-            if self.Game.code[guessed_colors] == guessed_code[guessed_colors]:
-                result["correct"] += 1
-            else:
-                for color in range(len(self.Game.code)):
-                    if self.Game.code[color] == guessed_code[guessed_colors]:
-                        if guessed_colors == color:
-                            result["correct"] += 1
-                        else:
-                            result["in_but_not_correct"] += 1
-                        break
+        # Check if pins are in exactly the right spot
+        code = self.Game.code
+        i = 0
+        for guessed_color in guessed_colors:
+            if guessed_color is not None and code[i] == guessed_color:
+                result['correct'] += 1
+                code[i] = None
+            i += 1
+
+        # Check if remaining pins are not in the right spot but have the right colour
+        i = 0
+        for guessed_color in guessed_colors:
+            if guessed_color is not None:
+                j = 0
+                for color_code in code:
+                    if color_code is not None and color_code == guessed_color:
+                        result['in_but_not_correct'] += 1
+                        code[i] = None
+                    j += 1
+            i += 1
         return result
 
     def add_new_pin_row(self, color_row):
