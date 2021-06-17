@@ -1,37 +1,37 @@
 {% extends "layout.html" %}
 {% block content %}
     <div class="col-lg-6">
-        <div class="container board-container">
-            {#            <div class="row">#}
-            {#                {% for i in range(0, game.number_of_positions) %}#}
-            {#                    <div class="col">{{ i }}</div>#}
-            {#                {% endfor %}#}
-            {#            </div>#}
-            {% for y in range(0, 10) %}
-                <div class="row">
-                    {% for x in range(0, game.number_of_positions) %}
-                        <div class="col {{ pins |
+        <form method="POST" action="./{{ game.id }}">
+            <div class="container board-container">
+                {% for y in range(0, 10) %}
+                    <div class="row">
+                        {% for x in range(0, game.number_of_positions) %}
+                            <div class="col {{ pins |
                                 selectattr('x', 'equalto', x) |
                                 selectattr('y', 'equalto',y) |
                                 map(attribute='color') |
                                 first |
                                 replace('Color.', '') }}"
-                        >
-                            {# i, _ #}
-                        </div>
+                            >
+                                {# i, _ #}
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endfor %}
+                <div class="row">
+                    {% for x in range(0, game.number_of_positions) %}
+                        <select class="col" name="{{ x }}">
+                            <option value="null">Empty</option>
+                            {% for c in Color %}
+                                <option value="{{ c }}">{{ c | replace('Color.', '') | capitalize }}</option>
+                            {% endfor %}
+                        </select>
                     {% endfor %}
                 </div>
-            {% endfor %}
-            <form method="POST" action="./" class="row">
-                {% for x in range(0, game.number_of_positions) %}
-                    <select class="col" name="{{ x }}">
-                        <option value="null">Empty</option>
-                        {% for c in Color %}
-                            <option value="{{ c }}">{{ c | replace('Color.', '') | capitalize }}</option>
-                        {% endfor %}
-                    </select>
-                {% endfor %}
-            </form>
-        </div>
+            </div>
+            <button type="submit" class="btn btn-primary float-end mt-3">
+                Submit next move
+            </button>
+        </form>
     </div>
 {% endblock %}
