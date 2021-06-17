@@ -77,11 +77,10 @@ def game(game_id):
     if request.method == 'GET':
         pins = Pin.query.filter_by(game_id=game_id).all()
         used_colors = list(Color)[0:game.number_of_colors]
+        results = mastermind.get_all_results()
         # TODO: Add logic for winning
 
-        print(mastermind.get_all_results())
-
-        return render_template('game.html', game=game, pins=pins, Color=used_colors, code=game.code)
+        return render_template('game.html', game=game, pins=pins, Color=used_colors, code=game.code, results=results)
     else:
         color_array = []
         for value in request.form.values():
