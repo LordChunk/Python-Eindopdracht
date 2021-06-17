@@ -9,7 +9,6 @@ from models.Game import Game
 from models.Pin import Pin
 from models.PinColor import PinColor
 
-
 app = Flask(__name__)
 app.logger.setLevel(logging.INFO)
 
@@ -59,12 +58,13 @@ def create_game():
             duplicate_color=bool(request.form.get('duplicate_color') or ''),
             number_of_colors=int(request.form['number_of_colors']),
             number_of_positions=int(request.form['number_of_positions']),
+            code=Game.make_code(),
         )
 
         db.session.add(new_game)
         db.session.commit()
 
-        return redirect('/game/'+str(new_game.id))
+        return redirect('/game/' + str(new_game.id))
 
 
 with app.app_context():
