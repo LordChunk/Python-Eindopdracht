@@ -46,7 +46,7 @@ def game_list():
     # ToDO: fix logout login bug with stats
     games = Game.query.filter_by(user_id=session['user_id']).all()
     user = User.query.filter_by(id=session['user_id']).first()
-    games_played = Game.query.filter_by(id=session['user_id']).count()
+    games_played = Game.query.filter_by(user_id=session['user_id']).count()
 
     if games_played == 0:
         average_turns = 0
