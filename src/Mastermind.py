@@ -11,6 +11,7 @@ class Mastermind:
 
     def __init__(self, Game):
         self.Game = Game
+        self.maxTurns = 10
 
     def make_code(self):
         secret_code = []
@@ -102,6 +103,9 @@ class Mastermind:
         return result
 
     def add_new_pin_row(self, color_row):
+        if self.Game.turns >= self.maxTurns:
+            return
+
         i = 0
         for pinColor in color_row:
             if pinColor is not None:
